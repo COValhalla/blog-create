@@ -8,7 +8,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = fetch('http://localhost:3000/api/users/create', {
+      const res = await fetch('http://localhost:3000/api/users/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -17,15 +17,15 @@ function SignUp() {
           username,
           password,
         }),
-      }).then((response) => {
-        if (response.status === 200) {
-          setUsername('')
-          setPassword('')
-          setMessage('User created successfully.')
-        } else {
-          setMessage('Error creating user.')
-        }
       })
+
+      if (res.status === 200) {
+        setUsername('')
+        setPassword('')
+        setMessage('User created successfully.')
+      } else {
+        setMessage('Error creating user.')
+      }
     } catch (error) {
       console.error(error)
     }
