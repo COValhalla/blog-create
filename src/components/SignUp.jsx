@@ -34,9 +34,10 @@ function SignUp() {
   return (
     <div>
       <form
-        className="mx-auto mt-4 flex w-1/2 flex-col gap-2 rounded bg-slate-900 p-4 text-white"
+        className="mx-auto mt-4 flex w-1/3 flex-col gap-2 rounded bg-slate-900 p-4 text-white"
         onSubmit={handleSubmit}
       >
+        <h1 className="mx-auto text-2xl">Sign Up</h1>
         <label htmlFor="username">Username</label>
         <input
           value={username}

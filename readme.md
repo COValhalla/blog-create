@@ -1,6 +1,7 @@
 # React Boilerplate Project
 
-This is a boilerplate project for getting up and running quickly without having to install a bunch of random packages.
+Todos
+- Password confirmation and validator on sign-up
 
 ## Authors
 
