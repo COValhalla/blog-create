@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import PasswordChecklist from 'react-password-checklist'
 
 function SignUp() {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordConf, setPasswordConf] = useState('')
   const [message, setMessage] = useState('')
 
   const handleSubmit = async (e) => {
@@ -58,6 +60,25 @@ function SignUp() {
           type="password"
           name="password"
           id="password"
+        />
+
+        <label htmlFor="password">Confirm Password</label>
+        <input
+          value={passwordConf}
+          onChange={(e) => setPasswordConf(e.target.value)}
+          className="mb-2 rounded bg-slate-800"
+          placeholder="Confirm your password."
+          type="password"
+          name="password"
+          id="password"
+        />
+
+        <PasswordChecklist
+          rules={['minLength', 'number', 'capital', 'match']}
+          minLength={5}
+          value={password}
+          valueAgain={passwordConf}
+          onChange={(isValid) => {}}
         />
 
         <button
