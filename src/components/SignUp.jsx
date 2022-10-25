@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import PasswordChecklist from 'react-password-checklist'
 import validator from 'validator'
 
@@ -11,6 +12,9 @@ function SignUp() {
   const [passwordConf, setPasswordConf] = useState('')
   const [valid, setValid] = useState(false)
   const [errorMessages, setErrorMessages] = useState([])
+
+  const navigate = useNavigate()
+
   const handleUsernameChange = (e) => {
     const { value } = e.target
     setUsername((prevUsername) => ({
@@ -82,17 +86,21 @@ function SignUp() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username,
+          username: username.value,
           password,
         }),
       })
 
-      if (res.status === 200) {
-        setUsername('')
-        setPassword('')
-        setMessage('User created successfully.')
+      if (res.status === 201) {
+        navigate('/')
       } else {
-        setMessage('Error creating user.')
+        setErrorMessages((prevErrorMessages) => {
+          const newErrorMessages = prevErrorMessages.filter(
+            (message) => message !== 'Error creating user, try again.',
+          )
+          newErrorMessages.push('Error creating user, try again.')
+          return newErrorMessages
+        })
       }
     } catch (error) {
       console.error(error)
@@ -102,7 +110,7 @@ function SignUp() {
   return (
     <div>
       <form
-        className="mx-auto mt-4 flex w-1/3 flex-col gap-2 rounded bg-slate-900 p-4 text-white"
+        className="mx-auto mt-4 flex w-1/3 min-w-fit flex-col gap-2 rounded bg-slate-900 p-4 text-white"
         onSubmit={handleSubmit}
       >
         <h1 className="mx-auto text-2xl">Sign Up</h1>
@@ -149,8 +157,9 @@ function SignUp() {
         />
 
         <PasswordChecklist
-          rules={['minLength', 'number', 'capital', 'match']}
+          rules={['minLength', 'maxLength', 'number', 'capital', 'match']}
           minLength={5}
+          maxLength={24}
           value={password}
           valueAgain={passwordConf}
           onChange={(isValid) => {
