@@ -10,8 +10,7 @@ function SignUp() {
   const [password, setPassword] = useState('')
   const [passwordConf, setPasswordConf] = useState('')
   const [valid, setValid] = useState(false)
-  const [message, setMessage] = useState('')
-
+  const [errorMessages, setErrorMessages] = useState([])
   const handleUsernameChange = (e) => {
     const { value } = e.target
     setUsername((prevUsername) => ({
@@ -21,18 +20,56 @@ function SignUp() {
   }
 
   const usernameValidation = () => {
-    if (!validator.isAlphanumeric(username.value)) {
-      setMessage('Username must be alphanumeric.')
-    } else if (!validator.isLength(username.value, { min: 8, max: 20 })) {
-      setMessage('Username must be between 8 and 20 characters.')
-    } else if (
-      validator.isLength(username.value, { min: 8, max: 20 }).isAlphanumeric()
-    ) {
-      setMessage('')
+    if (validator.isAlphanumeric(username.value)) {
       setUsername((prevUsername) => ({
         ...prevUsername,
         valid: true,
       }))
+      setErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = prevErrorMessages.filter(
+          (message) => message !== 'Username must be alphanumeric.',
+        )
+        return newErrorMessages
+      })
+    } else {
+      setUsername((prevUsername) => ({
+        ...prevUsername,
+        valid: false,
+      }))
+      setErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = prevErrorMessages.filter(
+          (message) => message !== 'Username must be alphanumeric.',
+        )
+        newErrorMessages.push('Username must be alphanumeric.')
+        return newErrorMessages
+      })
+    }
+
+    if (validator.isLength(username.value, { min: 8, max: 20 })) {
+      setUsername((prevUsername) => ({
+        ...prevUsername,
+        valid: true,
+      }))
+      setErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = prevErrorMessages.filter(
+          (message) =>
+            message !== 'Username must be between 8 and 20 characters.',
+        )
+        return newErrorMessages
+      })
+    } else {
+      setUsername((prevUsername) => ({
+        ...prevUsername,
+        valid: false,
+      }))
+      setErrorMessages((prevErrorMessages) => {
+        const newErrorMessages = prevErrorMessages.filter(
+          (message) =>
+            message !== 'Username must be between 8 and 20 characters.',
+        )
+        newErrorMessages.push('Username must be between 8 and 20 characters.')
+        return newErrorMessages
+      })
     }
   }
 
@@ -81,7 +118,13 @@ function SignUp() {
           id="username"
         />
 
-        {message ? <span className="text-red-600"> {message} </span> : null}
+        {errorMessages.length > 0 ? (
+          <ul className="text-red-500">
+            {errorMessages.map((message) => (
+              <li key={message}>{message}</li>
+            ))}
+          </ul>
+        ) : null}
 
         <label htmlFor="password">Password</label>
         <input
