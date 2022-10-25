@@ -5,18 +5,21 @@ import Create from './components/Create'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Navigation from './components/partials/Navigation'
+import { UserContextProvider } from './context/UserContext'
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navigation />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/create" element={<Create />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-      </Routes>
-    </BrowserRouter>
+    <UserContextProvider>
+      <BrowserRouter>
+        <Navigation />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
+    </UserContextProvider>
   )
 }
 
