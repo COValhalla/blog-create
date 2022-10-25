@@ -2,6 +2,7 @@
 
 Todos
 - Password confirmation and validator on sign-up
+- Dark mode toggle
 
 ## Authors
 

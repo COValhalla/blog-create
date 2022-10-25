@@ -1,11 +1,40 @@
 import React, { useState } from 'react'
 import PasswordChecklist from 'react-password-checklist'
+import validator from 'validator'
 
 function SignUp() {
-  const [username, setUsername] = useState('')
+  const [username, setUsername] = useState({
+    value: '',
+    valid: false,
+  })
   const [password, setPassword] = useState('')
   const [passwordConf, setPasswordConf] = useState('')
+  const [valid, setValid] = useState(false)
   const [message, setMessage] = useState('')
+
+  const handleUsernameChange = (e) => {
+    const { value } = e.target
+    setUsername((prevUsername) => ({
+      ...prevUsername,
+      value,
+    }))
+  }
+
+  const usernameValidation = () => {
+    if (!validator.isAlphanumeric(username.value)) {
+      setMessage('Username must be alphanumeric.')
+    } else if (!validator.isLength(username.value, { min: 8, max: 20 })) {
+      setMessage('Username must be between 8 and 20 characters.')
+    } else if (
+      validator.isLength(username.value, { min: 8, max: 20 }).isAlphanumeric()
+    ) {
+      setMessage('')
+      setUsername((prevUsername) => ({
+        ...prevUsername,
+        valid: true,
+      }))
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -42,8 +71,9 @@ function SignUp() {
         <h1 className="mx-auto text-2xl">Sign Up</h1>
         <label htmlFor="username">Username</label>
         <input
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={username.value}
+          onChange={handleUsernameChange}
+          onBlur={usernameValidation}
           className="rounded bg-slate-800"
           placeholder="Enter a username."
           type="text"
@@ -51,9 +81,11 @@ function SignUp() {
           id="username"
         />
 
+        {message ? <span className="text-red-600"> {message} </span> : null}
+
         <label htmlFor="password">Password</label>
         <input
-          value={password}
+          value={password.value}
           onChange={(e) => setPassword(e.target.value)}
           className="rounded bg-slate-800"
           placeholder="Enter a secure password."
@@ -62,15 +94,15 @@ function SignUp() {
           id="password"
         />
 
-        <label htmlFor="password">Confirm Password</label>
+        <label htmlFor="passwordConf">Confirm Password</label>
         <input
-          value={passwordConf}
+          value={passwordConf.value}
           onChange={(e) => setPasswordConf(e.target.value)}
           className="mb-2 rounded bg-slate-800"
           placeholder="Confirm your password."
           type="password"
-          name="password"
-          id="password"
+          name="passwordConf"
+          id="passwordConf"
         />
 
         <PasswordChecklist
@@ -78,16 +110,18 @@ function SignUp() {
           minLength={5}
           value={password}
           valueAgain={passwordConf}
-          onChange={(isValid) => {}}
+          onChange={(isValid) => {
+            setValid(isValid)
+          }}
         />
 
         <button
           className="mt-2 w-fit self-center rounded bg-green-700 py-1 px-2 "
           type="submit"
+          disabled={!username.valid || !valid}
         >
           Sign Up
         </button>
-        <div className="mx-auto">{message ? <p>{message} </p> : null} </div>
       </form>
     </div>
   )
