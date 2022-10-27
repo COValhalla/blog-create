@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import PasswordChecklist from 'react-password-checklist'
 import validator from 'validator'
+import { UserContext } from '../context/UserContext'
 
 function SignUp() {
+  const context = useContext(UserContext)
+
   const [username, setUsername] = useState({
     value: '',
     valid: false,
@@ -91,14 +94,18 @@ function SignUp() {
         }),
       })
 
+      const data = await res.json()
+
       if (res.status === 201) {
+        // Need to send back relevant information from backend
         navigate('/')
+        context.login(data.user.username, data.token)
       } else {
         setErrorMessages((prevErrorMessages) => {
           const newErrorMessages = prevErrorMessages.filter(
-            (message) => message !== 'Error creating user, try again.',
+            (message) => message !== data.errors,
           )
-          newErrorMessages.push('Error creating user, try again.')
+          newErrorMessages.push(data.errors)
           return newErrorMessages
         })
       }
