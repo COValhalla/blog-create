@@ -1,9 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { UserContext } from '../context/UserContext'
 
 function SignIn() {
+  const context = useContext(UserContext)
+
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [message, setMessage] = useState('')
+  const [errorMessages, setErrorMessages] = useState([])
+
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -19,12 +25,19 @@ function SignIn() {
         }),
       })
 
+      const data = await res.json()
+
       if (res.status === 200) {
-        setUsername('')
-        setPassword('')
-        setMessage('User logged in successfully.')
+        navigate('/')
+        context.login(data.user.username, data.token)
       } else {
-        setMessage('Error logging in.')
+        setErrorMessages((prevErrorMessages) => {
+          const newErrorMessages = prevErrorMessages.filter(
+            (message) => message !== data.errors,
+          )
+          newErrorMessages.push(data.errors)
+          return newErrorMessages
+        })
       }
     } catch (error) {
       console.error(error)
@@ -66,7 +79,14 @@ function SignIn() {
         >
           Sign In
         </button>
-        <div className="mx-auto">{message ? <p>{message} </p> : null} </div>
+
+        {errorMessages.length > 0 ? (
+          <ul className="mx-auto text-red-500">
+            {errorMessages.map((message) => (
+              <li key={message}>{message}</li>
+            ))}
+          </ul>
+        ) : null}
       </form>
     </div>
   )
