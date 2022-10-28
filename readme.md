@@ -1,7 +1,8 @@
 # React Boilerplate Project
 
 Todos
-- Password confirmation and validator on sign-up
+
+- Store JWT in localStorage
 - Dark mode toggle
 
 ## Authors

@@ -23,7 +23,10 @@ function Navigation() {
             <Link
               className="rounded py-1 hover:bg-gray-500"
               to="/"
-              onClick={() => context.logout()}
+              onClick={() => {
+                context.logout()
+                window.location.reload()
+              }}
             >
               Logout
             </Link>

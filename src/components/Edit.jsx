@@ -52,7 +52,7 @@ function Edit() {
 
   return (
     <div className="mx-auto mt-4 flex w-1/2 flex-col rounded bg-slate-800 p-4">
-      <h1 className="text-2xl font-bold">Edit your blog.</h1>
+      <h1 className="mx-auto text-2xl font-bold">Edit your blog.</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-1">
         <label htmlFor="title">Title</label>
         <input
