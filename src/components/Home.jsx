@@ -10,7 +10,7 @@ function Home() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/blogs', {
+        const res = await fetch('http://localhost:3000/api/blogs/user/', {
           headers: {
             Authorization: `Bearer ${context.token}`,
           },
@@ -41,17 +41,19 @@ function Home() {
     <div className="flex flex-col items-center gap-2">
       <h1 className="text-2xl font-bold">Blogs</h1>
       <div className="flex w-1/2 flex-col gap-2">
-        {blogs.map((blog) => (
-          <Link
-            key={blog._id}
-            to="/edit/"
-            className="flex items-center justify-between rounded bg-slate-800 p-4"
-            state={{ blog }}
-          >
-            <h2 className="text-xl ">Blog Title: {blog.title}</h2>
-            <p>Status: {blog.status}</p>
-          </Link>
-        ))}
+        {blogs
+          ? blogs.map((blog) => (
+              <Link
+                key={blog._id}
+                to="/edit/"
+                className="flex items-center justify-between rounded bg-slate-800 p-4"
+                state={{ blog }}
+              >
+                <h2 className="text-xl ">Blog Title: {blog.title}</h2>
+                <p>Status: {blog.status}</p>
+              </Link>
+            ))
+          : null}
       </div>
     </div>
   )
