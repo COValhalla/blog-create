@@ -10,11 +10,14 @@ function Home() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/blogs/user/', {
-          headers: {
-            Authorization: `Bearer ${context.token}`,
+        const res = await fetch(
+          'https://blog-api-covalhalla.herokuapp.com/api/blogs/user/',
+          {
+            headers: {
+              Authorization: `Bearer ${context.token}`,
+            },
           },
-        })
+        )
 
         const data = await res.json()
 

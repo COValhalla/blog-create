@@ -14,18 +14,21 @@ function Create() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/api/blogs/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${context.token}`,
+      const res = await fetch(
+        'https://blog-api-covalhalla.herokuapp.com/api/blogs/create',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${context.token}`,
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            status,
+          }),
         },
-        body: JSON.stringify({
-          title,
-          content,
-          status,
-        }),
-      })
+      )
 
       const data = await res.json()
 

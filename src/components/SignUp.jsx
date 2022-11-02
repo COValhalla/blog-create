@@ -83,16 +83,19 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
-      const res = await fetch('http://localhost:3000/api/users/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        'https://blog-api-covalhalla.herokuapp.com/api/users/create',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            username: username.value,
+            password,
+          }),
         },
-        body: JSON.stringify({
-          username: username.value,
-          password,
-        }),
-      })
+      )
 
       const data = await res.json()
 

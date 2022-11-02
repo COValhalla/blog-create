@@ -17,7 +17,7 @@ function Edit() {
     e.preventDefault()
     try {
       const res = await fetch(
-        `http://localhost:3000/api/blogs/${blog._id}/update`,
+        `https://blog-api-covalhalla.herokuapp.com/api/blogs/${blog._id}/update`,
         {
           method: 'PUT',
           headers: {
@@ -54,7 +54,7 @@ function Edit() {
     e.preventDefault()
     try {
       const res = await fetch(
-        `http://localhost:3000/api/blogs/${blog._id}/delete`,
+        `https://blog-api-covalhalla.herokuapp.com/api/blogs/${blog._id}/delete`,
         {
           method: 'DELETE',
           headers: {
