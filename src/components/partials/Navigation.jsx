@@ -7,7 +7,7 @@ function Navigation() {
   return (
     <div>
       <nav className="flex justify-between bg-slate-800 px-8 py-1 text-2xl text-white">
-        <div>
+        <div className="flex">
           <Link className="rounded py-1 hover:bg-gray-500" to="/">
             Home
           </Link>
